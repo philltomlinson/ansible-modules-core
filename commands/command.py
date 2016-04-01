@@ -179,7 +179,6 @@ def main():
     removes  = module.params['removes']
     warn = module.params['warn']
 
-    # CCS changes
     # Logs the command on the remote host when run in check mode
     if module.check_mode:
         cmdlogfile = "/tmp/" + os.environ.get('command_file_name')
