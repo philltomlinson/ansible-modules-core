@@ -167,7 +167,8 @@ def main():
           creates = dict(),
           removes = dict(),
           warn = dict(type='bool', default=True),
-        )
+        ),
+        supports_check_mode=True # CCS changes
     )
 
     shell = module.params['_uses_shell']
@@ -177,6 +178,20 @@ def main():
     creates  = module.params['creates']
     removes  = module.params['removes']
     warn = module.params['warn']
+
+    # CCS changes
+    # Logs the command on the remote host when run in check mode
+    if module.check_mode:
+        cmdlogfile = "/tmp/" + os.environ.get('command_file_name')
+        fo = open(cmdlogfile, "a")
+        fo.write(str(datetime.datetime.time(datetime.datetime.now())))
+        fo.write(" ")
+        fo.write(socket.gethostname())
+        fo.write(" ")
+        fo.write(args)
+        fo.write("\n")
+        fo.close()
+        module.exit_json(changed=False, stdout="skipped dry run mode")
 
     if args.strip() == '':
         module.fail_json(rc=256, msg="no command given")
