@@ -168,7 +168,7 @@ def main():
           removes = dict(),
           warn = dict(type='bool', default=True),
         ),
-        supports_check_mode=True # CCS changes
+        supports_check_mode=True
     )
 
     shell = module.params['_uses_shell']
